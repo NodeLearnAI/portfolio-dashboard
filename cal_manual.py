@@ -1,5 +1,5 @@
 #print the annualised return, print the annualised volatility, divide them yourself. 
-from db_loader import get_ticker_data, get_multiple_tickers_data
+from data_loader import get_ticker_data, get_multiple_tickers_data
 from risk_metrics import calculate_var, calculate_drawdown_series
 from correlation import calculate_correlation_matrix, calculate_portfolio_volatility
 import numpy as np

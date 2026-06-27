@@ -2,7 +2,7 @@ import streamlit as st
 import numpy as np
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
-from db_loader import get_ticker_data
+from data_loader import get_ticker_data
 from metrics import (
     calculate_daily_returns,
     calculate_annualised_return,

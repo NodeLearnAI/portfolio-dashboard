@@ -1,7 +1,7 @@
 # components.py  ← new file in Module5/
 import datetime
 import streamlit as st
-from db_loader import get_available_tickers
+from data_loader import get_available_tickers
 
 def render_sidebar():
     st.sidebar.title("Controls")

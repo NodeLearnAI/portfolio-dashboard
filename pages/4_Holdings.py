@@ -64,6 +64,7 @@ for index, row in edited_df.iterrows():
         st.error(f"Error fetching data for ticker {ticker}: {e}")
 
 summary_df = pd.DataFrame(rows)
+st.session_state['summary_df'] = summary_df
 
 if not summary_df.empty:
     total_market_value = summary_df['Market Value'].sum()

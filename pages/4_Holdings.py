@@ -7,6 +7,13 @@ import streamlit as st
 import pandas as pd
 import yfinance as yf
 from components import render_sidebar
+from portfolio_engine import calculate_portfolio_returns
+
+from metrics import (
+    calculate_annualised_return,
+    calculate_annualised_volatility,
+    calculate_sharpe_ratio
+)
 
 render_sidebar()
 st.title("My Holdings")
@@ -76,3 +83,29 @@ else:
 # Save edits back to session state
 if st.button("Analyse Portfolio"):
     st.session_state["holdings"] = edited_df
+
+    #Build inputs for portfolio engine
+    weights = dict(zip(summary_df['Ticker'], summary_df['Weight']))
+    tickers = summary_df['Ticker'].tolist()
+
+    #Calculate portfolio returns
+    start_date = st.session_state.get('start_date')
+    end_date = st.session_state.get('end_date')
+    portfolio_returns = calculate_portfolio_returns(tickers, weights, start_date, end_date)
+
+    #Store portfolio_returns in session_state for other pages to use
+    st.session_state['portfolio_returns'] = portfolio_returns
+    print(portfolio_returns)
+    #Calculate portfolio metrics ann_return , volatility, sharpe
+    ann_return = calculate_annualised_return(portfolio_returns)
+    volatility = calculate_annualised_volatility(portfolio_returns)
+    sharpe = calculate_sharpe_ratio(portfolio_returns, 0.04)
+
+    print(ann_return)
+    print(volatility)
+    print(sharpe)
+
+    col1, col2, col3 = st.columns(3)
+    col1.metric("Portfolio Ann. Return", f"{ann_return*100:.2f}%")
+    col2.metric("Annualised Volatility", f"{volatility*100:.2f}%")
+    col3.metric("Sharpe Ratio", f"{sharpe:.2f}")
